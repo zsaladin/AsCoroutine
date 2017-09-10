@@ -29,6 +29,11 @@ namespace AsCoroutine
             return false;
         }
 
+        protected virtual bool IsRepeat(object prevInstruction)
+        {
+            return false;
+        }
+
         public Cooperator Start()
         {
             StartCoroutine();
@@ -168,6 +173,35 @@ namespace AsCoroutine
                 resultInstruction = Instruction = Coroutine(prevInstuction);
             }
             return true;
+        }
+    }
+
+    public class CooperatorRepeat : Cooperator
+    {
+        private Func<bool> _predicate;
+        private int _repeatCount;
+
+        public CooperatorRepeat(MonoBehaviour monoBehaviour, Cooperator parent, Func<bool> predicate)
+            : base(monoBehaviour, parent)
+        {
+            _predicate = predicate;
+        }
+
+        public CooperatorRepeat(MonoBehaviour monoBehaviour, Cooperator parent, int repeatCount)
+            : base(monoBehaviour, parent)
+        {
+            _repeatCount = repeatCount;
+            _predicate = () =>
+            {
+                return --_repeatCount > 0;
+            };
+        }
+
+        protected override bool IsRepeat(object prevInstruction)
+        {
+            if (_predicate == null)
+                return false;
+            return _predicate();
         }
     }
 }

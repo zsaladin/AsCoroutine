@@ -9,8 +9,7 @@ namespace AsCoroutine.Example
         private void Sample1()
         {
             this.AsCoroutine()
-                .YieldWWW(new WWW("http://google.com"))
-                .YieldAction(www =>
+                .YieldWWW(new WWW("http://ip.jsontest.com/?mime=5")).Action(www =>
                 {
                     Debug.Log(www.text);
                 }).Start();
@@ -18,60 +17,26 @@ namespace AsCoroutine.Example
 
         private void Sample2()
         {
+            WWW www = null;
             this.AsCoroutine()
-                .YieldWWW(new WWW("http://google.com"), www => 
+                .Action(() => www = new WWW("https://api.github.com/users/zsaladin/repos"))
+                .Action(() => Debug.Log(www.progress))
+                .Repeat(() => www.isDone == false)
+                .Action(() =>
                 {
+                    Debug.Log(www.progress);
                     Debug.Log(www.text);
-                }).Start();
-        }
-
-        private void Sample3()
-        {
-            this.AsCoroutine()
-                .YieldWWW(new WWW("http://google.com"), www =>
-                {
-                    Debug.Log(www.text);
-                    return new WWW("http://unity3d.com");
-                })
-                .YieldAction(www =>
-                {
-                    Debug.Log(www.text);
-                }).Start();
-        }
-
-        private void Sample4()
-        {
-            this.AsCoroutine()
-                .YieldWWW(new WWW("http://google.com"), www =>
-                {
-                    Debug.Log(www.text);
-                    return new WWW("http://unity3d.com");
-                })
-                .YieldFunc(www =>
-                {
-                    Debug.Log(www.text);
-                    return new WaitForSeconds(3f);
-                })
-                .YieldNextFrame(() =>
-                {
-                    Debug.Log("Complete");
                 })
                 .Start();
         }
 
         private void OnGUI()
         {
-            if (GUI.Button(GetRect(1, 4), "Sample1"))
+            if (GUI.Button(GetRect(1, 2), "Sample1"))
                 Sample1();
 
-            if (GUI.Button(GetRect(2, 4), "Sample2"))
+            if (GUI.Button(GetRect(2, 2), "Sample2"))
                 Sample2();
-
-            if (GUI.Button(GetRect(3, 4), "Sample3"))
-                Sample3();
-
-            if (GUI.Button(GetRect(4, 4), "Sample4"))
-                Sample4();
         }
 
         private Rect GetRect(int order, int totalOrder)
