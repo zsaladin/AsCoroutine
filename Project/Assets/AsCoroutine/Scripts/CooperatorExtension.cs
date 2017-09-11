@@ -9,56 +9,113 @@ namespace AsCoroutine
     {
         public static Cooperator AsCoroutine(this MonoBehaviour monoBehaviour)
         {
-            return new Cooperator(monoBehaviour, null);
+            return new Cooperator(null);
         }
 
         public static Cooperator<TCurrInstruction> Yield<TCurrInstruction>(this Cooperator cooperator, TCurrInstruction instruction)
         {
-            return new Cooperator<TCurrInstruction>(cooperator.MonoBehaviour, cooperator, instruction);
+            return new Cooperator<TCurrInstruction>(cooperator, instruction);
         }
 
         public static CooperatorAction Action(this Cooperator cooperator, Action action)
         {
-            return new CooperatorAction(cooperator.MonoBehaviour, cooperator, action);
+            return new CooperatorAction(cooperator, action);
         }
 
         public static CooperatorAction<TPrevInstruction> Action<TPrevInstruction>(this Cooperator<TPrevInstruction> cooperator, Action<TPrevInstruction> action)
         {
-            return new CooperatorAction<TPrevInstruction>(cooperator.MonoBehaviour, cooperator, action);
+            return new CooperatorAction<TPrevInstruction>(cooperator, action);
         }
 
         public static CooperatorFunc<TCurrInstruction> YieldAction<TCurrInstruction>(this Cooperator cooperator, Func<TCurrInstruction> func)
         {
-            return new CooperatorFunc<TCurrInstruction>(cooperator.MonoBehaviour, cooperator, func);
+            return new CooperatorFunc<TCurrInstruction>(cooperator, func);
         }
 
         public static CooperatorFunc<TPrevInstruction, TCurrInstruction> YieldAction<TPrevInstruction, TCurrInstruction>(this Cooperator<TPrevInstruction> cooperator, Func<TPrevInstruction, TCurrInstruction> func)
         {
-            return new CooperatorFunc<TPrevInstruction, TCurrInstruction>(cooperator.MonoBehaviour, cooperator, func);
+            return new CooperatorFunc<TPrevInstruction, TCurrInstruction>(cooperator, func);
         }
+
+
+        #region - Repeat
 
         public static CooperatorRepeat Repeat(this CooperatorAction cooperator, Func<bool> predicate)
         {
-            return new CooperatorRepeat(cooperator.MonoBehaviour, cooperator, predicate);
+            return new CooperatorRepeat(cooperator, predicate);
         }
 
         public static CooperatorRepeat Repeat(this CooperatorAction cooperator, int repeatCount)
         {
-            return new CooperatorRepeat(cooperator.MonoBehaviour, cooperator, repeatCount);
+            return new CooperatorRepeat(cooperator, repeatCount);
         }
 
-        #region Helper
+        public static CooperatorRepeat Repeat<TCurrInstruction>(this Cooperator<TCurrInstruction> cooperator, Func<bool> predicate)
+        {
+            return new CooperatorRepeat(cooperator, predicate);
+        }
+
+        public static CooperatorRepeat Repeat<TCurrInstruction>(this Cooperator<TCurrInstruction> cooperator, int repeatCount)
+        {
+            return new CooperatorRepeat(cooperator, repeatCount);
+        }
+
+        public static CooperatorRepeat Repeat<TPrevInstruction>(this CooperatorAction<TPrevInstruction> cooperator, Func<bool> predicate)
+        {
+            return new CooperatorRepeat(cooperator, predicate);
+        }
+
+        public static CooperatorRepeat Repeat<TPrevInstruction>(this CooperatorAction<TPrevInstruction> cooperator, int repeatCount)
+        {
+            return new CooperatorRepeat(cooperator, repeatCount);
+        }
+
+        #endregion
+
+        #region - New
+
+        public static Cooperator New(this Cooperator cooperator)
+        {
+            return cooperator.Clone();
+        }
+
+        public static Cooperator<TCurrInstruction> New<TCurrInstruction>(this Cooperator<TCurrInstruction> cooperator)
+        {
+            return cooperator.Clone() as Cooperator<TCurrInstruction>;
+        }
+
+        public static CooperatorAction New(this CooperatorAction cooperator)
+        {
+            return cooperator.Clone() as CooperatorAction;
+        }
+
+        public static CooperatorAction<TPrevInstruction> New<TPrevInstruction>(this CooperatorAction<TPrevInstruction> cooperator)
+        {
+            return cooperator.Clone() as CooperatorAction<TPrevInstruction>;
+        }
+
+        public static CooperatorFunc<TCurrInstruction> New<TCurrInstruction>(this CooperatorFunc<TCurrInstruction> cooperator)
+        {
+            return cooperator.Clone() as CooperatorFunc<TCurrInstruction>;
+        }
+
+        public static CooperatorFunc<TPrevInstruction, TCurrInstruction> New<TPrevInstruction, TCurrInstruction>(this CooperatorFunc<TPrevInstruction, TCurrInstruction> cooperator)
+        {
+            return cooperator.Clone() as CooperatorFunc<TPrevInstruction, TCurrInstruction>;
+        }
+
+        #endregion
 
         #region - Combine
 
         public static Cooperator YieldCoroutine(this Cooperator cooperator, Cooperator appendCooperator)
         {
-            return cooperator.YieldCoroutine(appendCooperator.GetEnumerator());
+            return cooperator.YieldCoroutine(appendCooperator.New());
         }
 
         public static Cooperator YieldCoroutine(this Cooperator cooperator, Coroutine appendCoroutine)
         {
-            return cooperator.Yield<Coroutine>(appendCoroutine);
+            return cooperator.Yield(appendCoroutine);
         }
 
         public static Cooperator YieldCoroutine(this Cooperator cooperator, IEnumerator appendCoroutine)
@@ -120,8 +177,6 @@ namespace AsCoroutine
         {
             return cooperator.Yield(customYieldInstruction);
         }
-
-        #endregion
 
         #endregion
     }

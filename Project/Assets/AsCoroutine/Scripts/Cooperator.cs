@@ -5,22 +5,14 @@ using UnityEngine;
 
 namespace AsCoroutine
 {
-    public partial class Cooperator : IEnumerable
+    public partial class Cooperator
     {
-        private List<Coroutine> _runningCoroutines = new List<Coroutine>();
-
-        public MonoBehaviour MonoBehaviour { get; private set; }
         public Cooperator Parent { get; private set; }
+        private MonoBehaviour _monoBehaviour;
 
-        public Cooperator(MonoBehaviour monoBehaviour, Cooperator parent)
+        public Cooperator(Cooperator parent)
         {
-            MonoBehaviour = monoBehaviour;
             Parent = parent;
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return new Enumerator(this);
         }
 
         protected virtual bool Instruct(object prevInstruction, out object resultInstruction)
@@ -34,32 +26,21 @@ namespace AsCoroutine
             return false;
         }
 
-        public Cooperator Start()
+        public virtual Cooperator Clone()
         {
-            StartCoroutine();
+            return new Cooperator(Parent);
+        }
+
+        public Cooperator Start(MonoBehaviour monoBehaviour)
+        {
+            _monoBehaviour = monoBehaviour;
+            _monoBehaviour.StartCoroutine(this);
             return this;
         }
 
-        public Coroutine StartCoroutine()
+        public void Stop()
         {
-            Coroutine coroutine = MonoBehaviour.StartCoroutine(GetEnumerator());
-            _runningCoroutines.Add(coroutine);
-            return coroutine;
-        }
-
-        public void StopAll()
-        {
-            foreach (Coroutine coroutine in _runningCoroutines)
-            {
-                MonoBehaviour.StopCoroutine(coroutine);
-            }
-
-            Clear();
-        }
-
-        public void Clear()
-        {
-            _runningCoroutines.Clear();
+            _monoBehaviour.StopCoroutine(this);
         }
     }
 
@@ -67,8 +48,8 @@ namespace AsCoroutine
     {
         public TCurrInstruction Instruction { get; protected set; }
 
-        public Cooperator(MonoBehaviour monoBehaviour, Cooperator parent, TCurrInstruction instruction)
-            : base(monoBehaviour, parent)
+        public Cooperator(Cooperator parent, TCurrInstruction instruction)
+            : base(parent)
         {
             Instruction = instruction;
         }
@@ -78,14 +59,19 @@ namespace AsCoroutine
             resultInstruction = Instruction;
             return true;
         }
+
+        public override Cooperator Clone()
+        {
+            return new Cooperator<TCurrInstruction>(Parent, Instruction);
+        }
     }
 
     public class CooperatorAction : Cooperator
     {
         public Action Coroutine { get; private set; }
 
-        public CooperatorAction(MonoBehaviour monoBehaviour, Cooperator parent, Action coroutine)
-            : base(monoBehaviour, parent)
+        public CooperatorAction(Cooperator parent, Action coroutine)
+            : base(parent)
         {
             Coroutine = coroutine;
         }
@@ -99,14 +85,19 @@ namespace AsCoroutine
             Coroutine();
             return false;
         }
+
+        public override Cooperator Clone()
+        {
+            return new CooperatorAction(Parent, Coroutine);
+        }
     }
 
     public class CooperatorAction<TPrevInstruction> : Cooperator
     {
         public Action<TPrevInstruction> Coroutine { get; private set; }
 
-        public CooperatorAction(MonoBehaviour monoBehaviour, Cooperator parent, Action<TPrevInstruction> coroutine)
-            : base(monoBehaviour, parent)
+        public CooperatorAction(Cooperator parent, Action<TPrevInstruction> coroutine)
+            : base(parent)
         {
             Coroutine = coroutine;
         }
@@ -125,14 +116,19 @@ namespace AsCoroutine
             Coroutine(prevInstuction);
             return false;
         }
+
+        public override Cooperator Clone()
+        {
+            return new CooperatorAction<TPrevInstruction>(Parent, Coroutine);
+        }
     }
 
     public class CooperatorFunc<TCurrInstruction> : Cooperator<TCurrInstruction>
     {
         public Func<TCurrInstruction> Coroutine { get; private set; }
 
-        public CooperatorFunc(MonoBehaviour monoBehaviour, Cooperator parent, Func<TCurrInstruction> coroutine)
-            : base(monoBehaviour, parent, default(TCurrInstruction))
+        public CooperatorFunc(Cooperator parent, Func<TCurrInstruction> coroutine)
+            : base(parent, default(TCurrInstruction))
         {
             Coroutine = coroutine;
         }
@@ -145,14 +141,19 @@ namespace AsCoroutine
                 resultInstruction = Instruction = Coroutine();
             return true;
         }
+
+        public override Cooperator Clone()
+        {
+            return new CooperatorFunc<TCurrInstruction>(Parent, Coroutine);
+        }
     }
 
     public class CooperatorFunc<TPrevInstruction, TCurrInstruction> : Cooperator<TCurrInstruction>
     {
         public Func<TPrevInstruction, TCurrInstruction> Coroutine { get; private set; }
 
-        public CooperatorFunc(MonoBehaviour monoBehaviour, Cooperator parent, Func<TPrevInstruction, TCurrInstruction> coroutine)
-            : base(monoBehaviour, parent, default(TCurrInstruction))
+        public CooperatorFunc(Cooperator parent, Func<TPrevInstruction, TCurrInstruction> coroutine)
+            : base(parent, default(TCurrInstruction))
         {
             Coroutine = coroutine;
         }
@@ -174,26 +175,32 @@ namespace AsCoroutine
             }
             return true;
         }
+
+        public override Cooperator Clone()
+        {
+            return new CooperatorFunc<TPrevInstruction, TCurrInstruction>(Parent, Coroutine);
+        }
     }
 
     public class CooperatorRepeat : Cooperator
     {
         private Func<bool> _predicate;
         private int _repeatCount;
+        private int _repeatCurrentCount;
 
-        public CooperatorRepeat(MonoBehaviour monoBehaviour, Cooperator parent, Func<bool> predicate)
-            : base(monoBehaviour, parent)
+        public CooperatorRepeat(Cooperator parent, Func<bool> predicate)
+            : base(parent)
         {
             _predicate = predicate;
         }
 
-        public CooperatorRepeat(MonoBehaviour monoBehaviour, Cooperator parent, int repeatCount)
-            : base(monoBehaviour, parent)
+        public CooperatorRepeat(Cooperator parent, int repeatCount)
+            : base(parent)
         {
             _repeatCount = repeatCount;
             _predicate = () =>
             {
-                return --_repeatCount > 0;
+                return _repeatCount > _repeatCurrentCount;
             };
         }
 
@@ -202,6 +209,20 @@ namespace AsCoroutine
             if (_predicate == null)
                 return false;
             return _predicate();
+        }
+
+        protected override void Reset()
+        {
+            base.Reset();
+
+            _repeatCurrentCount = 0;
+        }
+
+        public override Cooperator Clone()
+        {
+            CooperatorRepeat newCooperator = new CooperatorRepeat(Parent, _predicate);
+            newCooperator._repeatCount = _repeatCount;
+            return newCooperator;
         }
     }
 }

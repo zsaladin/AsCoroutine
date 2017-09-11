@@ -12,7 +12,7 @@ namespace AsCoroutine.Example
                 .YieldWWW(new WWW("http://ip.jsontest.com/?mime=5")).Action(www =>
                 {
                     Debug.Log(www.text);
-                }).Start();
+                }).Start(this);
         }
 
         private void Sample2()
@@ -27,7 +27,7 @@ namespace AsCoroutine.Example
                     Debug.Log(www.progress);
                     Debug.Log(www.text);
                 })
-                .Start();
+                .Start(this);
         }
 
         private void OnGUI()
