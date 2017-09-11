@@ -154,17 +154,17 @@ namespace AsCoroutine
 
         public static Cooperator<WaitForSecondsRealtime> YieldWaitForSecondsRealtime(this Cooperator cooperator, float seconds)
         {
-            return cooperator.Yield(new WaitForSecondsRealtime(seconds));
+            return cooperator.YieldAction(() => new WaitForSecondsRealtime(seconds));
         }
 
         public static Cooperator<WaitUntil> YieldWaitUntil(this Cooperator cooperator, Func<bool> predicate)
         {
-            return cooperator.Yield(new WaitUntil(predicate));
+            return cooperator.YieldAction(() => new WaitUntil(predicate));
         }
 
         public static Cooperator<WaitWhile> YieldWaitWhile(this Cooperator cooperator, Func<bool> predicate)
         {
-            return cooperator.Yield(new WaitWhile(predicate));
+            return cooperator.YieldAction(() => new WaitWhile(predicate));
         }
 
         public static Cooperator<AsyncOperation> YieldAsyncOperation(this Cooperator cooperator, AsyncOperation asyncOperation)
