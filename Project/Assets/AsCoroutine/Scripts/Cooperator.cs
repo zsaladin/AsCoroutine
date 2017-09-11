@@ -200,7 +200,7 @@ namespace AsCoroutine
             _repeatCount = repeatCount;
             _predicate = () =>
             {
-                return _repeatCount > _repeatCurrentCount;
+                return ++_repeatCurrentCount < _repeatCount;
             };
         }
 
