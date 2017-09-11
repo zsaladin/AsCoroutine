@@ -6,18 +6,15 @@ namespace AsCoroutine.Example
 {
     public class ExampleBasic : MonoBehaviour
     {
-        private Cooperator _cooperator;
         private void Sample1()
         {
-            if (_cooperator == null)
-                _cooperator = this.AsCoroutine()
-                    .YieldWaitForSecondsRealtime(1f).Action(() => Debug.Log("WaitForSeconds"))
-                    .YieldWaitForSecondsRealtime(1f).Action(() => Debug.Log("WaitForSecondsRealtime"))
-                    .YieldNextFrame().Action(() => Debug.Log("NextFrame"))
-                    .YieldWaitEndOfFrame().Action(() => Debug.Log("WaitEndOfFrame"))
-                    .Start(this);
-            else
-                _cooperator.New().Start(this);
+            this.AsCoroutine()
+                .YieldWaitForSeconds(1f).Action(() => Debug.Log("WaitForSeconds"))
+                .YieldWaitForSecondsRealtime(1f).Action(() => Debug.Log("WaitForSecondsRealtime"))
+                .YieldNextFrame().Action(() => Debug.Log("NextFrame"))
+                .YieldWaitEndOfFrame().Action(() => Debug.Log("WaitEndOfFrame"))
+                .YieldWaitForFixedUpdate().Action(() => Debug.Log("WaitForFixedUpdate"))
+                .Start(this);
         }
 
         private void Sample2()
