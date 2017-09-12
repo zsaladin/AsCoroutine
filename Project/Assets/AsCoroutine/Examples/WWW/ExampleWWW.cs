@@ -6,7 +6,7 @@ namespace AsCoroutine.Example
 {
     public class ExampleWWW : MonoBehaviour
     {
-        private void Sample1()
+        private void Example1()
         {
             this.AsCoroutine()
                 .YieldWWW(new WWW("http://ip.jsontest.com/?mime=5")).Action(www =>
@@ -15,7 +15,7 @@ namespace AsCoroutine.Example
                 }).Start(this);
         }
 
-        private void Sample2()
+        private void Example2()
         {
             WWW www = null;
             this.AsCoroutine()
@@ -32,11 +32,11 @@ namespace AsCoroutine.Example
 
         private void OnGUI()
         {
-            if (GUI.Button(GetRect(1, 2), "Sample1"))
-                Sample1();
+            if (GUI.Button(GetRect(1, 2), "Example1"))
+                Example1();
 
-            if (GUI.Button(GetRect(2, 2), "Sample2"))
-                Sample2();
+            if (GUI.Button(GetRect(2, 2), "Example2"))
+                Example2();
         }
 
         private Rect GetRect(int order, int totalOrder)

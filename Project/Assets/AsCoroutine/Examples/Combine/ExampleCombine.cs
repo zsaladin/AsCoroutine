@@ -6,7 +6,7 @@ namespace AsCoroutine.Example
 {
 	public class ExampleCombine : MonoBehaviour
 	{
-		private void Sample1()
+		private void Example1()
 		{
             Cooperator cooperator1 = this.AsCoroutine().YieldWaitForSeconds(1f).Action(() => Debug.Log("cooperator1"));
             Cooperator cooperator2 = this.AsCoroutine().YieldWaitForSecondsRealtime(1f).Action(() => Debug.Log("cooperator2"));
@@ -14,7 +14,7 @@ namespace AsCoroutine.Example
             cooperator1.YieldCoroutine(cooperator2).Start(this);
 		}
 
-		private void Sample2()
+		private void Example2()
 		{
 			Cooperator cooperator1 = this.AsCoroutine().YieldWaitForSeconds(1f).Action(() => Debug.Log("cooperator1"));
 			Cooperator cooperator2 = this.AsCoroutine().YieldWaitForSecondsRealtime(1f).Action(() => Debug.Log("cooperator2"));
@@ -28,14 +28,14 @@ namespace AsCoroutine.Example
 			newCooperator.Start(this);
 		}
 
-		private void Sample3()
+		private void Example3()
 		{
 			this.AsCoroutine()
 				.YieldCoroutine(UnityCoroutine())
 				.Start(this);
 		}
 
-		private void Sample4()
+		private void Example4()
 		{
 			Cooperator cooperator = this.AsCoroutine().YieldWaitForSeconds(1f);
 			Cooperator newCooperator = cooperator.YieldCoroutine(UnityCoroutine());
@@ -51,17 +51,17 @@ namespace AsCoroutine.Example
 
 		private void OnGUI()
 		{
-			if (GUI.Button(GetRect(1, 4), "Sample1"))
-				Sample1();
+			if (GUI.Button(GetRect(1, 4), "Example1"))
+				Example1();
 
-			if (GUI.Button(GetRect(2, 4), "Sample2"))
-				Sample2();
+			if (GUI.Button(GetRect(2, 4), "Example2"))
+				Example2();
 
-			if (GUI.Button(GetRect(3, 4), "Sample3"))
-				Sample3();
+			if (GUI.Button(GetRect(3, 4), "Example3"))
+				Example3();
 
-			if (GUI.Button(GetRect(4, 4), "Sample4"))
-				Sample4();
+			if (GUI.Button(GetRect(4, 4), "Example4"))
+				Example4();
 		}
 
 		private Rect GetRect(int order, int totalOrder)

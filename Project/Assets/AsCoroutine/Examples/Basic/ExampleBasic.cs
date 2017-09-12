@@ -6,7 +6,7 @@ namespace AsCoroutine.Example
 {
     public class ExampleBasic : MonoBehaviour
     {
-        private void Sample1()
+        private void Example1()
         {
             this.AsCoroutine()
                 .YieldWaitForSeconds(1f).Action(() => Debug.Log("WaitForSeconds"))
@@ -17,7 +17,7 @@ namespace AsCoroutine.Example
                 .Start(this);
         }
 
-        private void Sample2()
+        private void Example2()
         {
             this.AsCoroutine()
                 .Action(() =>
@@ -34,9 +34,9 @@ namespace AsCoroutine.Example
                 .Start(this);
         }
 
-        private void Sample3()
+        private void Example3()
         {
-            Cooperator cooperator = this.AsCoroutine().Action(() => Debug.Log("Sample3")).Repeat(() => true).Start(this);
+            Cooperator cooperator = this.AsCoroutine().Action(() => Debug.Log("Example3")).Repeat(() => true).Start(this);
             this.AsCoroutine()
                 .YieldWaitForSeconds(2f)
                 .Action(() => cooperator.Stop())
@@ -44,9 +44,9 @@ namespace AsCoroutine.Example
                 .Start(this);
         }
 
-        private void Sample4()
+        private void Example4()
         {
-            Cooperator cooperator = this.AsCoroutine().Action(() => Debug.Log("Sample4")).Repeat(() => true);
+            Cooperator cooperator = this.AsCoroutine().Action(() => Debug.Log("Example4")).Repeat(() => true);
             StartCoroutine(cooperator);
 
             this.AsCoroutine()
@@ -58,17 +58,17 @@ namespace AsCoroutine.Example
 
         private void OnGUI()
         {
-            if (GUI.Button(GetRect(1, 4), "Sample1"))
-                Sample1();
+            if (GUI.Button(GetRect(1, 4), "Example1"))
+                Example1();
 
-            if (GUI.Button(GetRect(2, 4), "Sample2"))
-                Sample2();
+            if (GUI.Button(GetRect(2, 4), "Example2"))
+                Example2();
 
-			if (GUI.Button(GetRect(3, 4), "Sample3"))
-				Sample3();
+			if (GUI.Button(GetRect(3, 4), "Example3"))
+				Example3();
 
-			if (GUI.Button(GetRect(4, 4), "Sample4"))
-				Sample4();
+			if (GUI.Button(GetRect(4, 4), "Example4"))
+				Example4();
         }
 
         private Rect GetRect(int order, int totalOrder)
