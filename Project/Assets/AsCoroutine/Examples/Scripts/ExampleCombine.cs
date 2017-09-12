@@ -66,8 +66,8 @@ namespace AsCoroutine.Example
 
 		private Rect GetRect(int order, int totalOrder)
 		{
-			float width = Screen.width * 0.3f;
-			float x = Screen.width * 0.5f - width * 0.5f;
+			float width = Screen.width;
+            float x = 0f;
 
 			float height = Screen.height / totalOrder;
 			float y = (order - 1) * height;
