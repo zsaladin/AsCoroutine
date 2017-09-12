@@ -19,8 +19,6 @@ private IEnumerator UnityCoroutine()
 }
 ```
 
-
-
 Now you are free from writing the additional method.
 
 ```C#
@@ -32,6 +30,18 @@ private void OnEnable()
 }
 ```
 
+Method chain:
+```C#
+private void OnEnable()
+{
+    this.AsCoroutine()
+        .YieldWaitForSeconds(1f).Action(() => Debug.Log("WaitForSeconds"))
+        .YieldNextFrame().Action(() => Debug.Log("NextFrame"))
+        .YieldWaitEndOfFrame().Action(() => Debug.Log("WaitEndOfFrame"))
+        .YieldWaitForFixedUpdate().Action(() => Debug.Log("WaitForFixedUpdate"))
+        .Start(this);
+}
+```
 
 It provides a way to combine coroutines:
 ```C#
