@@ -38,9 +38,21 @@ namespace AsCoroutine
             return this;
         }
 
-        public void Stop()
+        public void Stop(MonoBehaviour monoBehaviour = null)
         {
-            _monoBehaviour.StopCoroutine(this);
+            if (monoBehaviour)
+            {
+                monoBehaviour.StopCoroutine(this);
+                return;
+            }
+
+            if (_monoBehaviour)
+            {
+                _monoBehaviour.StopCoroutine(this);   
+                return;
+            }
+
+            Debug.LogError("Start MonoBehaviour not found. Use MonoBehaviour.StopCoroutine or Cooperator.Stop(MonoBehaviour) if you started it by MonoBehaviour.StartCoroutine");
         }
     }
 
