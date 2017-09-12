@@ -17,6 +17,19 @@ namespace AsCoroutine.Example
 
         private void Example2()
         {
+            this.AsCoroutine()
+                .YieldWaitForSeconds(1f).Action(() => Debug.Log("Example2 WaitForSeconds"))
+                .YieldAction(() =>
+                {
+                    WWW www = new WWW("https://api.github.com/users/zsaladin/repos");
+                    return www;
+                })
+                .Action(www => Debug.Log(www.text))
+                .Start(this);
+        }
+
+        private void Example3()
+        {
             WWW www = null;
             this.AsCoroutine()
                 .Action(() => www = new WWW("https://api.github.com/users/zsaladin/repos"))
@@ -32,11 +45,14 @@ namespace AsCoroutine.Example
 
         private void OnGUI()
         {
-            if (GUI.Button(GetRect(1, 2), "Example1"))
+            if (GUI.Button(GetRect(1, 3), "Example1"))
                 Example1();
 
-            if (GUI.Button(GetRect(2, 2), "Example2"))
+            if (GUI.Button(GetRect(2, 3), "Example2"))
                 Example2();
+
+            if (GUI.Button(GetRect(3, 3), "Example3"))
+                Example3();
         }
 
         private Rect GetRect(int order, int totalOrder)
