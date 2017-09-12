@@ -108,11 +108,6 @@ namespace AsCoroutine
 
         #region - Combine
 
-        public static Cooperator YieldCoroutine(this Cooperator cooperator, Cooperator appendCooperator)
-        {
-            return cooperator.YieldCoroutine(appendCooperator.New());
-        }
-
         public static Cooperator YieldCoroutine(this Cooperator cooperator, Coroutine appendCoroutine)
         {
             return cooperator.Yield(appendCoroutine);
@@ -120,7 +115,11 @@ namespace AsCoroutine
 
         public static Cooperator YieldCoroutine(this Cooperator cooperator, IEnumerator appendCoroutine)
         {
-            return cooperator.Yield<IEnumerator>(appendCoroutine);
+            Cooperator appendCooperator = appendCoroutine as Cooperator;
+            if (appendCooperator != null)
+                cooperator.Yield(appendCooperator.New());
+                
+            return cooperator.Yield(appendCoroutine);
         }
 
         #endregion
