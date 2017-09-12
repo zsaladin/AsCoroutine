@@ -1,10 +1,10 @@
 # AsCoroutine
 
-AsCouroutine is a unity asset that allows you to use Coroutine in a functional style. You can handle coroutine as first-class citizen so that you combine coroutines or call them like method chain.
+AsCouroutine is a unity asset that allows you to use Coroutine in a functional style. You can handle coroutine as first-class citizen so that you can use method chain and combine coroutines.
 
 ## How to use
 
-You might face the case below. You had to write an additional method because of using just one line of 'yield return' state related with some instructions like 'WaitForSeconds', 'WaitForEndOfFrame' and so on. Sometimes it is annoying and makes your code ugly.
+You might face the case below. You would have to write an additional method because of using just one line of 'yield return' state related with some instructions like 'WaitForSeconds', 'WaitForEndOfFrame' and so on. Sometimes it is annoying and makes your code ugly.
 
 ```C#
 private void OnEnable()
@@ -30,7 +30,7 @@ private void OnEnable()
 }
 ```
 
-Method chain:
+Use method chain:
 ```C#
 private void OnEnable()
 {
@@ -72,7 +72,7 @@ private void OnEnable()
 }
 ```
 
-Handle it like original coroutine:
+Handle it like an original coroutine:
 ```C#
 private Cooperator _cooperator;
 private void OnEnable()
