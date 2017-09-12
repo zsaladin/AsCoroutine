@@ -48,7 +48,7 @@ namespace AsCoroutine
 
             if (_monoBehaviour)
             {
-                _monoBehaviour.StopCoroutine(this);   
+                _monoBehaviour.StopCoroutine(this);
                 return;
             }
 

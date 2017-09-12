@@ -26,7 +26,7 @@ namespace AsCoroutine
             {
                 if (isRepeatingRoutine == false && IsNextRepeat())
                     continue;
-                    
+
                 Cooperator currCooperator = _cooperators[_currentIndex];
 
                 object prevInstruction = _current;

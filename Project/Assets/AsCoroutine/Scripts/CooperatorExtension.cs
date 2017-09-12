@@ -118,7 +118,7 @@ namespace AsCoroutine
             Cooperator appendCooperator = appendCoroutine as Cooperator;
             if (appendCooperator != null)
                 cooperator.Yield(appendCooperator.New());
-                
+
             return cooperator.Yield(appendCoroutine);
         }
 

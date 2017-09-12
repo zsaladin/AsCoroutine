@@ -61,11 +61,11 @@ namespace AsCoroutine.Example
             if (GUI.Button(GetRect(2, 4), "Example2"))
                 Example2();
 
-			if (GUI.Button(GetRect(3, 4), "Example3"))
-				Example3();
+            if (GUI.Button(GetRect(3, 4), "Example3"))
+                Example3();
 
-			if (GUI.Button(GetRect(4, 4), "Example4"))
-				Example4();
+            if (GUI.Button(GetRect(4, 4), "Example4"))
+                Example4();
         }
 
         private Rect GetRect(int order, int totalOrder)
