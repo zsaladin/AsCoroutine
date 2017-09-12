@@ -20,10 +20,7 @@ namespace AsCoroutine.Example
         private void Example2()
         {
             this.AsCoroutine()
-                .Action(() =>
-                {
-                    Debug.Log("RepeatAction");
-                })
+                .Action(() => Debug.Log("RepeatAction"))
                 .Repeat(3)
                 .YieldAction(() =>
                 {

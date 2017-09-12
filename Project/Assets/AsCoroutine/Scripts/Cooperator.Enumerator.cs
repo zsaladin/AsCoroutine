@@ -21,9 +21,12 @@ namespace AsCoroutine
             if (_currentIndex < 0)
                 (this as IEnumerator).Reset();
 
-            bool isRepeating = false;
+            bool isRepeatingRoutine = false;
             while (0 <= --_currentIndex)
             {
+                if (isRepeatingRoutine == false && IsNextRepeat())
+                    continue;
+                    
                 Cooperator currCooperator = _cooperators[_currentIndex];
 
                 object prevInstruction = _current;
@@ -35,12 +38,12 @@ namespace AsCoroutine
                 }
                 else
                 {
-                    if (isRepeating)
+                    if (isRepeatingRoutine)
                         return true;
 
-                    if (currCooperator.IsRepeat(prevInstruction))
+                    if (currCooperator.IsRepeat())
                     {
-                        isRepeating = true;
+                        isRepeatingRoutine = true;
                         _currentIndex += 2;
                     }
                 }
@@ -67,6 +70,16 @@ namespace AsCoroutine
         protected virtual void Reset()
         {
 
+        }
+
+        private bool IsNextRepeat()
+        {
+            if (_currentIndex - 1 >= 0)
+            {
+                Cooperator nextCooperator = _cooperators[_currentIndex - 1];
+                return nextCooperator is CooperatorRepeat;
+            }
+            return false;
         }
 
     }

@@ -21,7 +21,7 @@ namespace AsCoroutine
             return false;
         }
 
-        protected virtual bool IsRepeat(object prevInstruction)
+        protected virtual bool IsRepeat()
         {
             return false;
         }
@@ -212,11 +212,11 @@ namespace AsCoroutine
             _repeatCount = repeatCount;
             _predicate = () =>
             {
-                return ++_repeatCurrentCount < _repeatCount;
+                return _repeatCurrentCount++ < _repeatCount;
             };
         }
 
-        protected override bool IsRepeat(object prevInstruction)
+        protected override bool IsRepeat()
         {
             if (_predicate == null)
                 return false;
