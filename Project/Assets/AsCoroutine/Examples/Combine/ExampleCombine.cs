@@ -20,34 +20,33 @@ namespace AsCoroutine.Example
 			Cooperator cooperator2 = this.AsCoroutine().YieldWaitForSecondsRealtime(1f).Action(() => Debug.Log("cooperator2"));
 			Cooperator cooperator3 = this.AsCoroutine().YieldWaitEndOfFrame().Action(() => Debug.Log("cooperator3"));
 
-			if (Random.value < 0.5f)
-				cooperator1 = cooperator1.YieldCoroutine(cooperator2);
-			else
-				cooperator1 = cooperator1.YieldCoroutine(cooperator3);
+			Cooperator newCooperator = 
+				Random.value < 0.5f ? 
+				cooperator1.YieldCoroutine(cooperator2) : 
+				cooperator1.YieldCoroutine(cooperator3);
 
-			cooperator1.Start(this);
+			newCooperator.Start(this);
 		}
 
 		private void Sample3()
 		{
-			Cooperator cooperator = this.AsCoroutine().Action(() => Debug.Log("Sample3")).Repeat(() => true).Start(this);
 			this.AsCoroutine()
-				.YieldWaitForSeconds(2f)
-				.Action(() => cooperator.Stop())
-				.Action(() => Debug.Log("Stop"))
+				.YieldCoroutine(UnityCoroutine())
 				.Start(this);
 		}
 
 		private void Sample4()
 		{
-			Cooperator cooperator = this.AsCoroutine().Action(() => Debug.Log("Sample4")).Repeat(() => true);
-			StartCoroutine(cooperator);
+			Cooperator cooperator = this.AsCoroutine().YieldWaitForSeconds(1f);
+			Cooperator newCooperator = cooperator.YieldCoroutine(UnityCoroutine());
+			newCooperator.Start(this);
+		}
 
-			this.AsCoroutine()
-				.YieldWaitForSeconds(2f)
-				.Action(() => StopCoroutine(cooperator))
-				.Action(() => Debug.Log("Stop"))
-				.Start(this);
+		private IEnumerator UnityCoroutine()
+		{
+			Debug.Log("UnityCoroutine Start");
+			yield return new WaitForSeconds(1f);
+			Debug.Log("UnityCoroutine End");
 		}
 
 		private void OnGUI()
