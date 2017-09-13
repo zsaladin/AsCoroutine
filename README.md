@@ -47,16 +47,16 @@ It provides a way to combine coroutines:
 ```C#
 private void OnEnable()
 {
-    Cooperator cooperator1 = this.AsCoroutine().YieldWaitForSeconds(1f).Action(() => Debug.Log("cooperator1"));
-    Cooperator cooperator2 = this.AsCoroutine().YieldNextFrame().Action(() => Debug.Log("cooperator2"));
-    Cooperator cooperator3 = this.AsCoroutine().YieldWaitEndOfFrame().Action(() => Debug.Log("cooperator3"));
+    Cooperator co1 = this.AsCoroutine().YieldWaitForSeconds(1f).Action(() => Debug.Log("co1"));
+    Cooperator co2 = this.AsCoroutine().YieldNextFrame().Action(() => Debug.Log("co2"));
+    Cooperator co3 = this.AsCoroutine().YieldWaitEndOfFrame().Action(() => Debug.Log("co3"));
 
-    Cooperator newCooperator =
+    Cooperator newCo =
         Random.value < 0.5f ?
-        cooperator1.YieldCoroutine(cooperator2) :
-        cooperator1.YieldCoroutine(cooperator3);
+        co1.YieldCoroutine(co2) :
+        co1.YieldCoroutine(co3);
 
-    newCooperator.Start(this);
+    newCo.Start(this);
 }
 ```
 
