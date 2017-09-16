@@ -11,7 +11,7 @@ namespace AsCoroutine.Example
             this.AsCoroutine()
                 .YieldWaitForSeconds(1f).Action(() => Debug.Log("WaitForSeconds"))
                 .YieldWaitForSecondsRealtime(1f).Action(() => Debug.Log("WaitForSecondsRealtime"))
-                .YieldNextFrame().Action(() => Debug.Log("NextFrame"))
+                .YieldWaitForNextFrame().Action(() => Debug.Log("WaitForNextFrame"))
                 .YieldWaitForEndOfFrame().Action(() => Debug.Log("WaitForEndOfFrame"))
                 .YieldWaitForFixedUpdate().Action(() => Debug.Log("WaitForFixedUpdate"))
                 .Start(this);

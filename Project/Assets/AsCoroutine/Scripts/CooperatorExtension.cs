@@ -126,7 +126,7 @@ namespace AsCoroutine
 
         #region - Yield Instructions
 
-        public static Cooperator YieldNextFrame(this Cooperator cooperator)
+        public static Cooperator YieldWaitForNextFrame(this Cooperator cooperator)
         {
             return cooperator.Yield((object)null);
         }
