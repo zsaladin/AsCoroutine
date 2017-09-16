@@ -36,8 +36,8 @@ private void OnEnable()
 {
     this.AsCoroutine()
         .YieldWaitForSeconds(1f).Action(() => Debug.Log("WaitForSeconds"))
-        .YieldNextFrame().Action(() => Debug.Log("NextFrame"))
-        .YieldWaitEndOfFrame().Action(() => Debug.Log("WaitEndOfFrame"))
+        .YieldWaitForNextFrame().Action(() => Debug.Log("WaitForNextFrame"))
+        .YieldWaitForEndOfFrame().Action(() => Debug.Log("WaitForEndOfFrame"))
         .YieldWaitForFixedUpdate().Action(() => Debug.Log("WaitForFixedUpdate"))
         .Start(this);
 }
@@ -48,8 +48,8 @@ It provides a way to combine coroutines:
 private void OnEnable()
 {
     Cooperator co1 = this.AsCoroutine().YieldWaitForSeconds(1f).Action(() => Debug.Log("co1"));
-    Cooperator co2 = this.AsCoroutine().YieldNextFrame().Action(() => Debug.Log("co2"));
-    Cooperator co3 = this.AsCoroutine().YieldWaitEndOfFrame().Action(() => Debug.Log("co3"));
+    Cooperator co2 = this.AsCoroutine().YieldWaitForNextFrame().Action(() => Debug.Log("co2"));
+    Cooperator co3 = this.AsCoroutine().YieldWaitForEndOfFrame().Action(() => Debug.Log("co3"));
 
     Cooperator newCo =
         Random.value < 0.5f ?
