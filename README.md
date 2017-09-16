@@ -22,6 +22,8 @@ private IEnumerator UnityCoroutine()
 Now you are free from writing the additional method.
 
 ```C#
+using AsCoroutine;
+
 private void OnEnable()
 {
     this.AsCoroutine()
@@ -35,6 +37,8 @@ Also it makes 'Awake' and 'OnEnable' use Coroutine. Unlike 'Start' we could not 
 
 Use method chain:
 ```C#
+using AsCoroutine;
+
 private void OnEnable()
 {
     this.AsCoroutine()
@@ -48,6 +52,8 @@ private void OnEnable()
 
 It provides a way to combine coroutines:
 ```C#
+using AsCoroutine;
+
 private void OnEnable()
 {
     Cooperator co1 = this.AsCoroutine().YieldWaitForSeconds(1f).Action(() => Debug.Log("co1"));
@@ -65,6 +71,8 @@ private void OnEnable()
 
 You can use 'WWW' with AsCoroutine:
 ```C#
+using AsCoroutine;
+
 private void OnEnable()
 {
     this.AsCoroutine()
@@ -77,6 +85,8 @@ private void OnEnable()
 
 Handle it like an original coroutine:
 ```C#
+using AsCoroutine;
+
 private Cooperator _cooperator;
 private void OnEnable()
 {
