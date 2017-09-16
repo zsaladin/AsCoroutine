@@ -18,7 +18,7 @@ namespace AsCoroutine.Example
         {
             Cooperator cooperator1 = this.AsCoroutine().YieldWaitForSeconds(1f).Action(() => Debug.Log("cooperator1"));
             Cooperator cooperator2 = this.AsCoroutine().YieldWaitForSecondsRealtime(1f).Action(() => Debug.Log("cooperator2"));
-            Cooperator cooperator3 = this.AsCoroutine().YieldWaitEndOfFrame().Action(() => Debug.Log("cooperator3"));
+            Cooperator cooperator3 = this.AsCoroutine().YieldWaitForEndOfFrame().Action(() => Debug.Log("cooperator3"));
 
             Cooperator newCooperator =
                 Random.value < 0.5f ?

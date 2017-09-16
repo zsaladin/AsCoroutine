@@ -136,7 +136,7 @@ namespace AsCoroutine
             return cooperator.Yield(www);
         }
 
-        public static Cooperator<WaitForEndOfFrame> YieldWaitEndOfFrame(this Cooperator cooperator)
+        public static Cooperator<WaitForEndOfFrame> YieldWaitForEndOfFrame(this Cooperator cooperator)
         {
             return cooperator.Yield(new WaitForEndOfFrame());
         }
