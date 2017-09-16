@@ -30,6 +30,9 @@ private void OnEnable()
 }
 ```
 
+Also it makes 'Awake' and 'OnEnable' use Coroutine. Unlike 'Start' we could not use Coroutine in them but you can from now.
+(Actually there is an another alternative in above situation. See [link](https://github.com/zsaladin/Asyncoroutine))
+
 Use method chain:
 ```C#
 private void OnEnable()
