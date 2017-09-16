@@ -7,7 +7,7 @@ namespace AsCoroutine
 {
     public static partial class CooperatorExtension
     {
-        public static Cooperator AsCoroutine(this MonoBehaviour monoBehaviour)
+        public static Cooperator AsCoroutine(this object monoBehaviour)
         {
             return new Cooperator(null);
         }
